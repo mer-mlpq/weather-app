@@ -16,7 +16,9 @@ searchButtonEl.addEventListener("click", () => {
   }
   getWeatherData(city);
 });
-
+inputEl.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") searchButtonEl.click();
+});
 async function getWeatherData(cityName) {
   try {
     const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_key}`;

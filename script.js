@@ -17,12 +17,24 @@ searchButtonEl.addEventListener("click", () => {
   getWeatherData(city);
 });
 inputEl.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") searchButtonEl.click();
+  if (event.key === "Enter") {
+    event.preventDefault();
+    const city = inputEl.value.trim();
+    if (!city) {
+      inputEl.value = "";
+      return;
+    }
+    getWeatherData(city);
+  }
 });
 async function getWeatherData(cityName) {
   try {
     const API_URL = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_key}`;
     const response = await fetch(API_URL);
+
+    if (!response.ok) {
+      throw new Error("City not found");
+    }
     const result = await response.json();
     tempEl.textContent =
       Math.round((result.main.temp - 273.15) * 1.8 + 32) + "°F";
